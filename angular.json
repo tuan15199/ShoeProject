@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ShoeAppFE": {
+    "AwpProjectFE": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -24,9 +24,20 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "./node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "./node_modules/bootstrap/dist/css/bootstrap.css",
+              "src/styles.css",
+              "./node_modules/datatables.net-bs4/css/dataTables.bootstrap4.css"
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "./node_modules/popper.js/dist/umd/popper.min.js",
+              "./node_modules/datatables.net/js/jquery.dataTables.js",
+              "./node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js",
+              "src/assets/js/custom.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -62,18 +73,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ShoeAppFE:build"
+            "browserTarget": "AwpProjectFE:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ShoeAppFE:build:production"
+              "browserTarget": "AwpProjectFE:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ShoeAppFE:build"
+            "browserTarget": "AwpProjectFE:build"
           }
         },
         "test": {
@@ -110,15 +121,15 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "ShoeAppFE:serve"
+            "devServerTarget": "AwpProjectFE:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "ShoeAppFE:serve:production"
+              "devServerTarget": "AwpProjectFE:serve:production"
             }
           }
         }
       }
     }},
-  "defaultProject": "ShoeAppFE"
+  "defaultProject": "AwpProjectFE"
 }
