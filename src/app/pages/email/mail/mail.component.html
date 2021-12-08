@@ -1,0 +1,109 @@
+     <div class="container-fluid">
+       <div class="row mb-5">
+         <div class="col-12" style="text-align: center;">
+           <h2>TTP SHOP</h2>
+           <h3>Thank you for buying our products</h3>
+         </div>
+       </div>
+
+       <div class="row justify-content-center ml-5 mb-5">
+         <table class="justify-content-center w-50" style="background-color: antiquewhite;">
+           <tr class="row">
+             <td class="col-6">
+               <div class="m-3">
+                 <strong>ORDER DETAIL:</strong>
+               </div>
+               <div class="row">
+                 <div class="col-4 ml-3">
+                   <strong>Order Date:</strong>
+                 </div>
+                 <div class="col-7">
+                   <strong>{{ordDate}}</strong>
+                 </div>
+               </div>
+
+               <div class="row">
+                 <div class="col-4 ml-3">
+                   <strong>Total Price:</strong>
+                 </div>
+                 <div class="col-7 mb-3">
+                   <strong>${{totalPayment}}</strong>
+                 </div>
+               </div>
+             </td>
+             <td class="col-6">
+               <div class="m-3">
+                 <strong>SHIPPING ADDRESS:</strong>
+               </div>
+               <div class="row">
+                 <div class="col-5 ml-3">
+                   <strong>Customer Name:</strong>
+                 </div>
+                 <div class="col-6">
+                   <strong>{{orderDto.firstName}} {{orderDto.lastName}}</strong>
+                 </div>
+               </div>
+               <div class="row">
+                 <div class="col-5 ml-3">
+                   <strong>Ship Address:</strong>
+                 </div>
+                 <div class="col-6">
+                   <strong>{{orderDto.address}}</strong>
+                 </div>
+               </div>
+             </td>
+           </tr>
+         </table>
+       </div>
+
+       <div class="row justify-content-center ml-5">
+         <div class="col-lg-8">
+           <table class="table table-borderless w-100 mb-3" style="margin-left: 12%;">
+             <tr class="row">
+               <th class="col-md-3 col-lg-2 col-xl-2">
+                 <h5>Products</h5>
+               </th>
+               <th class="col-md-4"></th>
+               <th style="text-align: center;">
+                 <h5>Quantity</h5>
+               </th>
+               <th style="text-align: center; margin-left: 3%;">
+                 <h5>Price</h5>
+               </th>
+             </tr>
+             <tr class="row" *ngFor="let detail of finalCustomerOrderList, let i = index">
+               <td class="col-md-3 col-lg-2 col-xl-2">
+                 <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
+                   <img class="img-fluid w-100" src={{detail.picture1}} alt="Sample">
+                 </div>
+               </td>
+               <td class="col-md-4">
+                 <p><strong>Shoe:</strong> {{detail.name}}</p>
+                 <p><strong>Brand:</strong> {{detail.brand}}</p>
+                 <p><strong>Color:</strong> {{detail.color}}</p>
+                 <p><strong>Size:</strong> {{detail.size}}</p>
+               </td>
+               <td class="col-md-2 col-lg-2 col-xl-1" style="text-align: center;">
+                 <div style="margin-top: 60px;" class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
+                   <h5>{{finnalOrderList[i].quantity}}</h5>
+                 </div>
+               </td>
+               <td class="col-md-2 col-lg-2 col-xl-2" style="text-align: center;">
+                 <div style="margin-top:60px;" class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
+                   <h5>${{detail.price*finnalOrderList[i].quantity}}</h5>
+                 </div>
+               </td>
+             </tr>
+           </table>
+           <h4 style="margin-left: 12%;">Total price: ${{totalPayment}}</h4>
+           <!-- <p><strong>Total: </strong>{{totalPrice}}</p> -->
+         </div>
+       </div>
+
+       <div class="d-flex justify-content-center w-50 mt-5" style="background-color: antiquewhite; margin-left: 28%;">
+         <div class="my-2">
+           <p><strong>321 Lê Văn Khương, P.Hiệp Thành, Q.12, Tp.HCM</strong></p>
+           <p style="margin-left: 30%;"><strong>0123989788-Mr.Phi</strong></p>
+         </div>
+       </div>
+     </div>

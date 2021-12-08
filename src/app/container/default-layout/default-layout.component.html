@@ -9,8 +9,8 @@
     </h3>
   </div>
   <div class="right_area">
-    <a href="#" class="logout_btn">Logout</a>
-  </div>
+    <a href="#" (click)="logout($event)" class="logout_btn">Logout</a>
+  </div>z
 </header>
 
 <div class="sidebar">
@@ -19,31 +19,14 @@
     <h4>Admin</h4>
   </div>
   <ul>
-    <li><a href="#"><i class="fas fa-desktop"></i><span>Dashboard</span></a></li>
+    <li><a href="product"><i class="fas fa-desktop"></i><span>Dashboard</span></a></li>
     <li><a href="product"><i class="fas fa-clipboard-list"></i><span>List Product</span></a></li>
-    <li><a href="#"><i class="fas fa-clipboard-list"></i><span>List Courses Type</span></a></li>
-    <li>
-      <a href="#"><i class="fas fa-table"></i><span>List Classes</span><i style="margin-left: 85px;" class="fas fa-caret-down"></i></a>
-      <ul class="dropdown-menu">
-        <li><a href="#"><i class="fas fa-plus-circle"></i><span>Add Course</span></a></li>
-        <li><a href="#"><i class="fas fa-plus-circle"></i><span>Add Class</span></a></li>
-        <li><a href="#"><i class="fas fa-plus-circle"></i><span>Add Course Types</span></a></li>
-      </ul>
-    </li>
+    <li><a href="order"><i class="fas fa-clipboard-list"></i><span>List Order</span></a></li>
+    <li><a href="orderSuccess"><i class="fas fa-clipboard-list"></i><span>List Order Success</span></a></li>
+    <li><a href="top"><i class="fas fa-clipboard-list"></i><span>Top List</span></a></li>
   </ul>
 </div>
 
-<div class="content">
+<div class="content pt-5">
   <router-outlet></router-outlet>
 </div>
-
-<!-- <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Dropdown button
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#">Action</a>
-    <a class="dropdown-item" href="#">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
-  </div>
-</div> -->

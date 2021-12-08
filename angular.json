@@ -20,18 +20,22 @@
             "tsConfig": "tsconfig.app.json",
             "aot": true,
             "assets": [
+              {
+                "glob": "**/*",
+                "input": "./C:/AwpProjectFE/shoephoto",
+                "output": "/assets/"
+              },
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
               "./node_modules/@fortawesome/fontawesome-free/css/all.css",
-              "./node_modules/bootstrap/dist/css/bootstrap.css",
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css",
               "./node_modules/datatables.net-bs4/css/dataTables.bootstrap4.css"
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.js",
               "./node_modules/popper.js/dist/umd/popper.min.js",
               "./node_modules/datatables.net/js/jquery.dataTables.js",
@@ -73,7 +77,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "AwpProjectFE:build"
+            "browserTarget": "AwpProjectFE:build",
+            "proxyConfig": "src/proxy.conf.js"
           },
           "configurations": {
             "production": {
@@ -130,6 +135,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "AwpProjectFE"
+    }
+  },
+  "defaultProject": "AwpProjectFE",
+  "cli": {
+    "analytics": "1beb5d3c-3e56-4819-8141-f3b7c857f021"
+  }
 }

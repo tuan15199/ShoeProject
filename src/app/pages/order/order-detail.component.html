@@ -1,0 +1,46 @@
+<div class="container-fluid">
+  <div class="card border-info my-5">
+    <div class="card-header text-right bg-warning">
+      <div class="row">
+        <div class="col-md-6 text-left">
+          <h3>Order Details</h3>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+
+      <div class="row mb-4 mt-2">
+        <div style="font-size: larger;" class="col-md-3"><strong>Customer: </strong>
+          {{cusName}}
+        </div>
+
+        <div style="font-size: larger;" class="col-md-3"><strong>Order Date: </strong>
+          {{ordDate}}
+        </div>
+
+        <div style="font-size: larger;" class="col-md-3"><strong>Delivery Date: </strong>
+          {{deliDate}}
+        </div>
+      </div>
+
+      <table class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+        <thead>
+          <tr style="text-align: center;">
+            <th scope="col">#</th>
+            <th scope="col">Product</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let detail of orderDetails" style="text-align: center;">
+            <th scope="row"></th>
+            <td><p style="text-align: left; margin-left: 35%;">{{detail.product}}</p></td>
+            <td>{{detail.quantity}}</td>
+            <td><p style="text-align: right; margin-right: 43%;">{{detail.totalPrice}}</p></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

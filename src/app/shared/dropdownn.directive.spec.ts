@@ -1,4 +1,4 @@
-import { DropdownnDirective } from './shared/dropdownn.directive';
+import { DropdownnDirective } from './dropdownn.directive';
 
 describe('DropdownnDirective', () => {
   it('should create an instance', () => {

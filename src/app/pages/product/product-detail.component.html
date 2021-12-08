@@ -1,0 +1,310 @@
+<div class="container-fluid">
+  <div class="card border-info my-5">
+    <div class="card-header text-right bg-warning">
+      <div class="row">
+        <div class="col-md-6 text-left">
+          <h3>{{productAdd.name}} Details</h3>
+        </div>
+        <button id="btnAdd" (click)="showModal(0); selectedModal(0)" class="btn btn-success offset-5" data-toggle="modal"
+          data-target="#myModal">Add</button>
+      </div>
+    </div>
+    <div class="card-body">
+
+      <div class="row mb-4 mt-2">
+        <div class="col-md-2">
+          <select class="custom-select mr-sm-2" [(ngModel)]="size" name="size">
+            <option value="0">Size...</option>
+            <option *ngFor="let s of sizes" [value]="s">{{s}}</option>
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <select class="custom-select mr-sm-2" [(ngModel)]="statusValue" id="status">
+            <option value="0">Status...</option>
+            <option *ngFor="let s of status" [value]="s">{{s}}</option>
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <button type="button" style="height: 40px;" (click)="filter()">Filter<i class="fas fa-filter"></i></button>
+        </div>
+      </div>
+
+      <table class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+        <thead>
+          <tr style="text-align: center;">
+            <th scope="col">#</th>
+            <th scope="col">Color</th>
+            <th scope="col">Size</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Star</th>
+            <th scope="col">Type</th>
+            <th scope="col">Status</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products" style="text-align: center;">
+            <th scope="row"></th>
+            <td><p style="text-align: left; margin-left: 38%;">{{product.color}}</p></td>
+            <td>{{product.size}}</td>
+            <td><p style="text-align: left; margin-left: 35%;">{{product.genderType}}</p></td>
+            <td>{{product.star}}</td>
+            <td>{{product.type}}</td>
+            <td *ngIf="product.status == 'Available'" class="text-info">
+              <strong>{{product.status}}</strong>
+            </td>
+            <td *ngIf="product.status == 'SoldOut'" class="text-danger">
+              <strong>{{product.status}}</strong>
+            </td>
+            <td><a (click)="showModal(product.detailID); selectedModal(product.detailID)"><i class="fas fa-edit text-success pointer"></i></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!--DETAIL MODAL -->
+<div *ngIf="modalOption == 1" bsModal #editModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-child-name">
+  <div class="modal-dialog modal-md mt-5" style="margin-left: 360px;">
+    <div class="modal-content" style="width: 180%;">
+      <div class="modal-header">
+        <h1>{{product.name}}</h1>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="form">
+          <table>
+            <tr class="row">
+              <td class="col-6">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                  <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                  </ol>
+
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img class="d-block w-100" src={{product.picture1}}>
+                    </div>
+                    <div class="carousel-item">
+                      <img class="d-block w-100" src={{product.picture2}}>
+                    </div>
+                    <div class="carousel-item">
+                      <img class="d-block w-100" src={{product.picture3}}>
+                    </div>
+                  </div>
+                  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  </a>
+                  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  </a>
+                </div>
+              </td>
+              <td class="col-6">
+                <div class="form-group row my-3">
+                  <label class="col-md-3"><strong>Brand:</strong></label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" readonly
+                      [ngClass]="{'is-invalid': form.controls['brand'].invalid && form.controls['brand'].touched}"
+                      [(ngModel)]="product.brand" formControlName="brand">
+                    <div *ngIf="form.controls['brand'].errors?.required" class="invalid-feedback">
+                      Please enter product brand
+                    </div>
+                    <div *ngIf="form.controls['brand'].errors?.minlength" class="invalid-feedback">
+                      At least 3 characters
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row my-3">
+                  <label class="col-md-3"><strong>Type:</strong></label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" readonly
+                      [ngClass]="{'is-invalid': form.controls['type'].invalid && form.controls['type'].touched}"
+                      [(ngModel)]="product.type" formControlName="type">
+                    <div *ngIf="form.controls['type'].errors?.required" class="invalid-feedback">
+                      Please enter product name
+                    </div>
+                    <div *ngIf="form.controls['type'].errors?.minlength" class="invalid-feedback">
+                      At least 3 characters
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row my-3">
+                  <label class="col-md-3"><strong>Name:</strong></label> 
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" readonly
+                      [ngClass]="{'is-invalid': form.controls['name'].invalid && form.controls['name'].touched}"
+                      [(ngModel)]="product.name" formControlName="name">
+                    <div *ngIf="form.controls['name'].errors?.required" class="invalid-feedback">
+                      Please enter product name
+                    </div>
+                    <div *ngIf="form.controls['name'].errors?.minlength" class="invalid-feedback">
+                      At least 3 characters
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row my-3">
+                  <label class="col-md-3"><strong>Price:</strong></label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control" readonly
+                      [ngClass]="{'is-invalid': form.controls['price'].invalid && form.controls['price'].touched}"
+                      [(ngModel)]="product.price" formControlName="price">
+                    <div *ngIf="form.controls['price'].errors?.required" class="invalid-feedback">
+                      Please enter product price
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row my-3">
+                  <label class="col-md-3"><strong>Color:</strong></label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control"
+                      [ngClass]="{'is-invalid': form.controls['color'].invalid && form.controls['color'].touched}"
+                      [(ngModel)]="product.color" formControlName="color">
+                    <div *ngIf="form.controls['color'].errors?.required" class="invalid-feedback">
+                      Please enter product color
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row my-3">
+                  <label class="col-md-3"><strong>Size:</strong></label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control"
+                      [ngClass]="{'is-invalid': form.controls['size'].invalid && form.controls['size'].touched}"
+                      [(ngModel)]="product.size" formControlName="size">
+                    <div *ngIf="form.controls['size'].errors?.required" class="invalid-feedback">
+                      Please enter product size
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row my-3">
+                  <label class="col-md-3"><strong>GenderType:</strong></label>
+                  <div class="col-md-8">
+                    <input type="text" class="form-control"
+                      [ngClass]="{'is-invalid': form.controls['genderType'].invalid && form.controls['genderType'].touched}"
+                      [(ngModel)]="product.genderType" formControlName="genderType">
+                    <div *ngIf="form.controls['genderType'].errors?.required" class="invalid-feedback">
+                      Please enter product price
+                    </div>
+                  </div>
+                </div>
+                <div class="container">
+                  <form [formGroup]="form" (ngSubmit)="submitForm()">
+                      <div class="form-group">
+                          <input type="file" (change)="uploadFile($event)">
+                      </div>
+              
+                      <div class="form-group input-group-lg">
+                          <input class="form-control" placeholder="Name" formControlName="name">
+                      </div>
+              
+                      <div class="form-group">
+                          <button class="btn btn-danger btn-block btn-lg">Create</button>
+                      </div>
+                  </form>
+              </div>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" [disabled]="form.invalid" class="btn btn-primary" (click)="save()">Save</button>
+        <button class="btn btn-dark" (click)="hideModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--END OF DETAIL MODAL-->
+
+<!--ADD MODAL-->
+<div *ngIf="modalOption == 0" bsModal #editModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-child-name">
+  <div class="modal-dialog modal-md" style="margin-left: 28%; margin-top: 5%;">
+    <div class="modal-content" style="width: 160%;">
+      <div class="modal-header bg-info">
+        <h1>Add Product Detail</h1>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body bg-light">
+        <form [formGroup]="form">
+          <div class="form-group row my-3">
+            <label class="col-md-2"><strong>Color:</strong></label>
+            <div class="col-md-10">
+              <input type="text" class="form-control"
+                [ngClass]="{'is-invalid': form.controls['color'].invalid && form.controls['color'].touched}"
+                [(ngModel)]="product.color" formControlName="color">
+              <div *ngIf="form.controls['color'].errors?.required" class="invalid-feedback">
+                Please enter product color
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row my-3">
+            <label class="col-md-2"><strong>Size:</strong></label>
+            <div class="col-md-10">
+              <input type="text" class="form-control"
+                [ngClass]="{'is-invalid': form.controls['size'].invalid && form.controls['size'].touched}"
+                [(ngModel)]="product.size" formControlName="size">
+              <div *ngIf="form.controls['size'].errors?.required" class="invalid-feedback">
+                Please enter product size
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-md-2 required"><strong>Gender</strong></label>
+            <!-- <input class="form-control" [(ngModel)]="student.gender" name = "gender"> -->
+            <label class="form-check-inline">
+              <input class="form-check-input ml-3" type="radio" formControlName="genderType"
+               [value]="0" [(ngModel)]="product.genderType">
+              Male
+            </label>
+            <label class="form-check-inline">
+              <input class="form-check-input ml-2" type="radio" formControlName="genderType"
+              [value]="1" [(ngModel)]="product.genderType">
+              Female
+            </label>
+            <label class="form-check-inline">
+              <input class="form-check-input ml-2" type="radio" formControlName="genderType"
+              [value]="2" [(ngModel)]="product.genderType">
+              Both
+            </label>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-md-2"><strong>Status</strong></label>
+            <!-- <input class="form-control" [(ngModel)]="student.gender" name = "gender"> -->
+            <label class="form-check-inline">
+              <input class="form-check-input ml-3" type="radio" formControlName="status"
+               [value]="0" [(ngModel)]="product.status">
+              Sold Out
+            </label>
+            <label class="form-check-inline">
+              <input class="form-check-input ml-2" type="radio" formControlName="status"
+              [value]="1" [(ngModel)]="product.status">
+              Available
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" [disabled]="form.invalid" class="btn btn-primary" (click)="save()">Save</button>
+        <button class="btn btn-dark" (click)="hideModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

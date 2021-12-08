@@ -1,30 +1,143 @@
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
-</table>
+<div class="container-fluid">
+  <div class="card border-info my-5">
+    <div class="card-header text-right bg-warning">
+      <div class="row">
+        <div class="col-md-2 text-left">
+          <h3>Shoe <small>list</small></h3>
+        </div>
+        <button id="btnAdd" (click)="showModal(0)" class="btn btn-success offset-9" data-toggle="modal"
+          data-target="#myModal">Add</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row mb-4 mt-2">
+        <div class="col-md-3"><strong style="font-size: 15px;">Add Brand: </strong>  
+          <input type="text" [(ngModel)]="brand.name" name="brand"/>
+        </div>
+        
+        <div class="col-md-2">
+          <button type="button" style="height: 30px;" (click)="createBrand()">Add <i class="fas fa-plus"></i></button>
+        </div>
+
+        <div class="col-md-4"><strong style="font-size: 15px;">Add Catalog: </strong>  
+          <input type="text" [(ngModel)]="catalog.type" name="type"/>
+        </div>
+        
+        <div class="col-md-2">
+          <button type="button" style="height: 30px; margin-left: -90px;" (click)="createCatalog()">Add <i class="fas fa-plus"></i></button>
+        </div>
+      </div>
+
+      <div class="row mb-4 mt-2">
+        <div class="col-md-2">
+          <select class="custom-select" [(ngModel)]="brandID" (ngModelChange)="selectedCatalogFromBrand()" name="selectedBrand">
+            <option [value]="0">Brand..</option>
+            <option *ngFor="let brand of brands" [value]="brand.id">{{brand.name}}</option>
+          </select>
+        </div>
+        
+        <div class="col-md-2">
+          <select class="custom-select mr-sm-2" [(ngModel)]="catalogID" name="type">
+            <option [value]="0">Type...</option>
+            <option *ngFor="let catalog of catalogs" [value]="catalog.id">{{catalog.type}}</option>
+          </select>
+        </div>
+        
+        <div class="col-md-2">
+          <button type="button" style="height: 40px;" (click)="filter()">Filter<i class="fas fa-filter"></i></button>
+        </div>
+      </div>
+
+      <table class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+        <thead>
+          <tr style="text-align: center;">
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Catalog</th>
+            <th scope="col">Brand</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products" style="text-align: center;">
+            <th scope="row"></th>
+            <td style="text-align: left;"><a style="margin-left: 40%;" [routerLink]="['/productDetail', product.id]">{{product.name}}</a></td>
+            <td style="text-align: right;"><p style="margin-right: 45%;">{{product.price}}</p></td>
+            <td>{{product.type}}</td>
+            <td class="text-info"><strong>{{product.brand}}</strong></td>
+            <td><a (click)="showModal(product.id)"><i class="fas fa-edit text-success pointer"></i></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!--ADD MODAL -->
+<div bsModal #editModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-child-name">
+  <div class="modal-dialog modal-md mt-5" style="margin-left: 360px;">
+    <div class="modal-content" style="width: 160%;">
+      <div class="modal-header">
+        <h1>{{action}} Shoe</h1>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="form">
+          <div class="form-group row my-3">
+            <label class="col-md-2"><strong>Brand</strong></label>
+            <div class="col-md-9">
+              <select class="custom-select" [(ngModel)]="productAdd.brandId" [formControl]="form.controls['brandId']" formControlName="brandId" (ngModelChange)="getCatalog()">
+                <option *ngFor="let brand of brands" [value]="brand.id">{{brand.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row my-3">
+            <label class="col-md-2"><strong>Type</strong></label>
+            <div class="col-md-9">
+              <select class="custom-select" [(ngModel)]="productAdd.catalogId" formControlName="catalogId" [formControl]="form.controls['catalogId']">
+                <option *ngFor="let catalog of catalogsForModal" [value]="catalog.id">{{catalog.type}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row my-3">
+            <label class="col-md-2"><strong>Name</strong></label>
+            <div class="col-md-9">
+              <input type="text" class="form-control"
+                [ngClass]="{'is-invalid': form.controls['name'].invalid && form.controls['name'].touched}" 
+                [(ngModel)]="productAdd.name"
+                formControlName="name">
+                <div *ngIf="form.controls['name'].errors?.required" class="invalid-feedback">
+                  Please enter product name
+                </div>
+                <div *ngIf="form.controls['name'].errors?.minlength" class="invalid-feedback">
+                  At least 3 characters
+                </div>
+            </div>
+          </div>
+
+          <div class="form-group row my-3">
+            <label class="col-md-2"><strong>Price</strong></label>
+            <div class="col-md-9">
+              <input type="text" class="form-control"
+                [ngClass]="{'is-invalid': form.controls['price'].invalid && form.controls['price'].touched}" 
+                [(ngModel)]="productAdd.price"
+                formControlName="price">
+                <div *ngIf="form.controls['price'].errors?.required" class="invalid-feedback">
+                  Please enter product price
+                </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" (click)="save()">Save</button>
+        <button class="btn btn-dark" (click)="hideModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--END ADD MODAL -->

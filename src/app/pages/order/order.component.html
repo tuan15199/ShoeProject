@@ -1,0 +1,100 @@
+<div class="container-fluid">
+  <div class="card border-info my-5">
+    <div class="card-header text-right bg-warning">
+      <div class="row">
+        <div class="col-md-5 text-left">
+          <h3>Order <small>list</small></h3>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      
+      <div class="row mb-4 mt-2">
+        <div class="col-md-3"><strong>From Date </strong>
+          <input type="date" [(ngModel)]="fromDate" name="fromDate" placeholder="fromDate" />
+        </div>
+
+        <div class="col-md-3"><strong>To Date </strong>
+          <input type="date" [(ngModel)]="toDate" name="toDate" placeholder="toDate" />
+        </div>
+
+        <div class="col-md-2" style="margin-left: -3%;">
+          <select class="custom-select" [(ngModel)]="status">
+            <option [value]="4">ALL</option>
+            <option [value]="0">PROCESSING</option>
+            <option [value]="1">VERIFIED</option>
+            <option [value]="3">DELIVERIED</option>
+            <option [value]="2">CANCEL</option>
+          </select>
+        </div>
+
+        <div class="col-md-2" >
+          <button type="button" style="height: 38px; border-radius: 5px;" (click)="search()">Result <i class="fas fa-search"></i></button>
+        </div>
+      </div>
+
+      <table class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+        <thead>
+          <tr style="text-align: center;">
+            <th scope="col">#</th>
+            <th scope="col">Customer</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone</th>
+            <!-- <th scope="col">Address</th> -->
+            <th scope="col">Total Payment($)</th>
+            <th scope="col">Order Date</th>
+            <th scope="col">Delivery Date</th>
+            <th scope="col">Status</th>
+            <th scope="col">
+              <a class="pointer" (click)="edit()" style="text-decoration: none;">Update</a>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders" style="text-align: center;">
+            <th scope="row"></th>
+            <td style="text-align: left;">
+              <a [routerLink]="['/orderDetail', order.id]">{{order.firstName}} {{order.lastName}}</a>
+            </td>
+            <td><p style="text-align: left;">{{order.email}}</p></td>
+            <td><p style="text-align: left;">{{order.phone}}</p></td>
+            <!-- <td>{{order.address}}</td> -->
+            <td><p style="text-align: right; margin-right: 40%;">{{order.totalPrice}}</p></td>
+            <td>{{order.orderDate}}</td>
+            <td *ngIf="order.deliveryDate === null">N/A</td>
+            <td *ngIf="order.deliveryDate != null">{{order.deliveryDate}}</td>
+            <td *ngIf="order.status == 'PROCESSING'" class="text-warning">
+              <strong>{{order.status}}</strong>
+            </td>
+            <td *ngIf="order.status == 'VERIFIED'" class="text-info">
+              <strong>{{order.status}}</strong>
+            </td>
+            <td *ngIf="order.status == 'DELIVERIED'" class="text-success">
+              <strong>{{order.status}}</strong>
+            </td>
+            <td *ngIf="order.status == 'CANCEL'" class="text-danger">
+              <strong>{{order.status}}</strong>
+            </td>
+            <td>
+              <a *ngIf="open === 0 && order.status != 'DELIVERIED' && order.status != 'CANCEL'" (click)="edit()">
+                <i class="fas fa-edit text-success pointer"></i>
+              </a>
+              <select *ngIf="open === 1 && order.status != 'DELIVERIED' && order.status != 'CANCEL'"
+                [(ngModel)]="updateOption" class="custom-select" (ngModelChange)="updateOrder(order.id); close()">
+                <option [value]="0">{{order.status}}</option>
+                <option *ngIf="order.status == 'PROCESSING'" [value]="1">VERIFIED</option>
+                <option *ngIf="order.status == 'VERIFIED'" [value]="3">DELIVERIED</option>
+                <option [value]="2">CANCEL</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row mb-4 mt-2">
+      <strong style="font-size: 30px; margin-left: 35%;">
+        Potential Income: <span style="color: coral;">${{totalPotentialSale}}</span>
+      </strong>
+    </div>
+  </div>
+</div>

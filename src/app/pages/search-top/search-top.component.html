@@ -1,0 +1,81 @@
+<div class="container-fluid">
+  <div class="card border-info my-5">
+    <div class="card-header text-right bg-warning">
+      <div class="row">
+        <div class="col-md-5 text-left">
+          <h3>Top {{type}} <small>Management</small></h3>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row mb-4 mt-2">
+        <div class="col-md-3"><strong>From Date </strong> 
+          <input type="date" [(ngModel)]="fromDate" name="fromDate" placeholder="fromDate"/>
+        </div>
+        
+        <div class="col-md-3"><strong>To Date </strong> 
+          <input type="date" [(ngModel)]="toDate" name="toDate" placeholder="toDate"/>
+        </div>
+
+        <div class="col-md-2" style="margin-left: -3%;"><strong>Top </strong> 
+          <input style="width: 40px;" type="text" [(ngModel)]="top" name="top"/>
+        </div>
+
+        <div class="col-md-2" style="margin-left: -8%;"> 
+          <select class="custom-select" [(ngModel)]="topType">
+            <option [value]="0">Select Type</option>
+            <option [value]="1">Customer</option>
+            <option [value]="2">Product</option>
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <button type="button" (click) ="search()"
+          style="height: 38px; border-radius: 5px;">Result <i class="fas fa-search"></i></button>
+        </div>
+      </div>
+
+      <table *ngIf="tableSelected != 2" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+        <thead>
+          <tr style="text-align: center;">
+            <th scope="col">#</th>
+            <th scope="col">Customer</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone</th>
+            <!-- <th scope="col">Address</th> -->
+            <th scope="col">Total Payment($)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let customer of customers" style="text-align: center;">
+            <th scope="row"></th>
+            <td>{{customer.firstName}} {{customer.lastName}}</td>
+            <td>{{customer.email}}</td>
+            <td>{{customer.phone}}</td>
+            <!-- <td>{{order.address}}</td> -->
+            <td>{{customer.totalPayment}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table *ngIf="tableSelected == 2" class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+        <thead>
+          <tr style="text-align: center;">
+            <th scope="col">#</th>
+            <th scope="col">Product</th>
+            <th scope="col">Brand</th>
+            <th scope="col">Total Sold($)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products" style="text-align: center;">
+            <th scope="row"></th>
+            <td>{{product.product}}</td>
+            <td>{{product.brand}}</td>
+            <td>{{product.totalSold}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
